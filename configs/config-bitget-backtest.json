@@ -1,0 +1,78 @@
+{
+  "strategy": "NostalgiaForInfinityX7",
+  "add_config_files": [
+    "../configs/trading_mode-futures.json",
+    "../configs/blacklist-bitget.json",
+    "../configs/exampleconfig.json"
+  ],
+  "exchange": {
+    "name": "bitget",
+    "key": "",
+    "secret": "",
+    "password": "",
+    "ccxt_config": {
+      "options": {
+        "defaultType": "swap"
+      },
+      "httpsProxy": "http://127.0.0.1:9001",
+      "rateLimit": 50,
+      "timeout": 30000,
+      "retries": 5
+    },
+    "ccxt_async_config": {
+      "options": {
+        "defaultType": "swap"
+      },
+      "httpsProxy": "http://127.0.0.1:9001"
+    },
+    "pair_whitelist": [
+      "AAVE/USDT:USDT",
+      "ADA/USDT:USDT",
+      "ALGO/USDT:USDT",
+      "APT/USDT:USDT",
+      "ARB/USDT:USDT",
+      "ATOM/USDT:USDT",
+      "AVAX/USDT:USDT",
+      "BCH/USDT:USDT",
+      "BTC/USDT:USDT",
+      "CHR/USDT:USDT",
+      "CKB/USDT:USDT",
+      "COMP/USDT:USDT",
+      "CRV/USDT:USDT",
+      "DOGE/USDT:USDT",
+      "DOT/USDT:USDT",
+      "ETC/USDT:USDT",
+      "ETH/USDT:USDT",
+      "FET/USDT:USDT",
+      "FIL/USDT:USDT",
+      "GALA/USDT:USDT",
+      "GRT/USDT:USDT",
+      "HBAR/USDT:USDT",
+      "ICP/USDT:USDT",
+      "IMX/USDT:USDT",
+      "INJ/USDT:USDT",
+      "JUP/USDT:USDT",
+      "KSM/USDT:USDT",
+      "LDO/USDT:USDT",
+      "LINK/USDT:USDT",
+      "LTC/USDT:USDT",
+      "NEAR/USDT:USDT",
+      "NEO/USDT:USDT",
+      "ONDO/USDT:USDT",
+      "ONE/USDT:USDT",
+      "ONT/USDT:USDT",
+      "OP/USDT:USDT",
+      "PEPE/USDT:USDT",
+      "QNT/USDT:USDT",
+      "ROSE/USDT:USDT",
+      "SEI/USDT:USDT",
+      "SHIB/USDT:USDT"
+    ],
+    "pair_blacklist": []
+  },
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ]
+}
