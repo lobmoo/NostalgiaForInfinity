@@ -64,6 +64,76 @@ COMPOSE_PROJECT_NAME=nostalgiaforinfinity
 docker compose logs -f nfi-updater
 ```
 
+## Bitget Futures Deployment (5x Leverage)
+
+### Quick Start
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/iterativv/NostalgiaForInfinity.git
+cd NostalgiaForInfinity
+
+# 2. Run setup script (configure proxy if needed)
+chmod +x setup-bitget.sh
+./setup-bitget.sh http://127.0.0.1:9001
+
+# 3. Edit API keys
+nano configs/config-bitget-dryrun.json
+# Fill in: key, secret, password
+
+# 4. Start services
+docker compose -f docker-compose-bitget.yml up -d --build
+```
+
+### Manual Setup
+
+```bash
+# 1. Build custom freqtrade image
+docker build -f docker/Dockerfile.custom -t freqtrade_with_numba .
+
+# 2. Configure API keys in configs/config-bitget-dryrun.json
+
+# 3. Start services
+docker compose -f docker-compose-bitget.yml up -d --build
+```
+
+### Configuration
+
+| Setting | Value |
+|---------|-------|
+| Strategy | NostalgiaForInfinityX7_5x (5x leverage) |
+| Exchange | Bitget Futures (USDT-M) |
+| Max Open Trades | 6 |
+| Timeframe | 5m |
+| Auto-Update | Daily at 10:00 AM (via nfi-updater) |
+
+### Commands
+
+```bash
+# View trading logs
+docker logs -f bitget-dryrun
+
+# View updater logs
+docker logs -f nfi-updater-bitget
+
+# Restart bot
+docker restart bitget-dryrun
+
+# Stop all services
+docker compose -f docker-compose-bitget.yml down
+
+# Start all services
+docker compose -f docker-compose-bitget.yml up -d
+```
+
+### How Auto-Update Works
+
+The `nfi-updater` sidecar service:
+1. Downloads latest `NostalgiaForInfinityX7.py` from GitHub daily
+2. Creates 5x version by replacing leverage values (3.0 → 5.0)
+3. Restarts the bot automatically when updates are detected
+4. Also syncs blacklist and pairlist configurations
+
 ## Discord Link
 This is where we chat, hangout and contribute as a community (both links is the same server)
 
