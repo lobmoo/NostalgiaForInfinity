@@ -17,4 +17,4 @@ echo "Running initial update check..."
 /scripts/update_nfi_bitget.sh
 
 # Keep the container running
-exec /scripts/nfi_watcher.sh
+exec /scripts/nfi_watcher_bitget.sh
