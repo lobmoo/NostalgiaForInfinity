@@ -1,5 +1,5 @@
 {
-  "strategy": "NostalgiaForInfinityX7",
+  "strategy": "NostalgiaForInfinityX7_5x",
   "add_config_files": [
     "../configs/trading_mode-futures.json",
     "../configs/blacklist-bitget.json",

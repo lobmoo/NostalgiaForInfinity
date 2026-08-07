@@ -1,0 +1,46 @@
+---
+
+x-common-settings:
+  &common-settings
+  image: freqtrade_with_numba
+  restart: unless-stopped
+  volumes:
+    - ".:/work"
+    - "./user_data/data:/work/user_data/data"
+  working_dir: /work
+  network_mode: host
+
+services:
+
+  freqtrade:
+    <<: *common-settings
+    container_name: bitget-dryrun
+    command: >
+      trade
+      --strategy NostalgiaForInfinityX7_5x
+      --strategy-path /work
+      --config configs/config-bitget-dryrun.json
+      --db-url sqlite:////work/user_data/bitget-dryrun-tradesv3.sqlite
+      --log-file user_data/logs/bitget-dryrun-NostalgiaForInfinityX7_5x.log
+    depends_on:
+      nfi-updater:
+        condition: service_started
+
+  nfi-updater:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.updater.bitget
+    container_name: nfi-updater-bitget
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ".:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - TZ=Asia/Shanghai
+      - NFI_UPDATE_CRON=0 10 * * *
+      - COMPOSE_PROJECT_NAME=nostalgiaforinfinity
+      - http_proxy=http://127.0.0.1:9001
+      - https_proxy=http://127.0.0.1:9001
+      - HTTP_PROXY=http://127.0.0.1:9001
+      - HTTPS_PROXY=http://127.0.0.1:9001

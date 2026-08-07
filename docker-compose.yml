@@ -6,6 +6,10 @@ x-common-settings:
   build:
     context: .
     dockerfile: "./docker/Dockerfile.custom"
+    network: host
+    args:
+      HTTP_PROXY: ${HTTP_PROXY:-}
+      HTTPS_PROXY: ${HTTPS_PROXY:-}
   restart: unless-stopped
   volumes:
     - "./user_data:/freqtrade/user_data"
