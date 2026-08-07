@@ -1,0 +1,9 @@
+{
+  "strategy": "NostalgiaForInfinityX7",
+  "add_config_files": [
+    "../configs/trading_mode-futures.json",
+    "../configs/pairlist-backtest-static-binance-futures-usdt.json",
+    "../configs/blacklist-binance.json",
+    "../configs/exampleconfig.json"
+  ]
+}
