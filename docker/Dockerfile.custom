@@ -1,10 +1,13 @@
 ARG sourceimage=freqtradeorg/freqtrade
 ARG sourcetag=stable
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
 
 # Stage 1: Build dependencies
 FROM ${sourceimage}:${sourcetag} AS builder
 
 USER root
+ENV HTTP_PROXY=${HTTP_PROXY} HTTPS_PROXY=${HTTPS_PROXY} http_proxy=${HTTP_PROXY} https_proxy=${HTTPS_PROXY}
 RUN pip install --upgrade pip
 
 COPY --chown=1000:1000 tests/requirements.txt /freqtrade/

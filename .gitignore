@@ -156,8 +156,8 @@ user_data/plot
 user_data/freqaimodels
 artifacts/
 
-# Don't commit configs
-config*.json
+# Don't commit configs (only root level)
+/config*.json
 
 # Don't commit any sqlite file which contains your tradings
 
@@ -165,3 +165,9 @@ config*.json
 *.sqlite-shm
 *.sqlite-wal
 .env**
+
+# Updater state
+.updater_state_*/
+
+# Temporary batch configs
+configs/config-bitget-backtest-batch*.json

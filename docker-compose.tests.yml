@@ -5,6 +5,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: tests-${STRATEGY_NAME:-NostalgiaForInfinityX7}-${STRATEGY_VERSION:-latest}-${EXCHANGE}-${TRADING_MODE}-${TIMERANGE}
     volumes:
       - "./:/testing"
@@ -21,6 +25,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -46,6 +54,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-analysis
     entrypoint: []
     working_dir: /freqtrade
@@ -124,6 +136,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2017
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -162,6 +178,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2018
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -200,6 +220,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2019
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -238,6 +262,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2020
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -276,6 +304,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2021
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -314,6 +346,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${STRATEGY_NAME:-NostalgiaForInfinityX7}-${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2022
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -352,6 +388,10 @@ services:
     build:
       context: .
       dockerfile: "./docker/Dockerfile.custom"
+      network: host
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
     container_name: ${STRATEGY_NAME:-NostalgiaForInfinityX7}-${EXCHANGE:-binance}-${TRADING_MODE:-spot}-backtesting-from-2023
     volumes:
       - "./user_data:/freqtrade/user_data"
