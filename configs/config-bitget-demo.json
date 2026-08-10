@@ -1,0 +1,73 @@
+{
+  "strategy": "NostalgiaForInfinityX7_5x",
+  "trading_mode": "futures",
+  "margin_mode": "isolated",
+  "max_open_trades": 6,
+  "stake_currency": "USDT",
+  "stake_amount": "unlimited",
+  "tradable_balance_ratio": 0.99,
+  "dry_run": false,
+  "cancel_open_orders_on_exit": false,
+  "timeframe": "5m",
+  "exchange": {
+    "name": "bitget",
+    "key": "",
+    "secret": "",
+    "password": "",
+    "ccxt_config": {
+      "options": {
+        "defaultType": "swap"
+      },
+      "httpsProxy": "http://127.0.0.1:9001",
+      "rateLimit": 50,
+      "timeout": 30000,
+      "retries": 5,
+      "headers": {
+        "paptrading": "1"
+      }
+    },
+    "ccxt_async_config": {
+      "options": {
+        "defaultType": "swap"
+      },
+      "enableRateLimit": true,
+      "rateLimit": 60,
+      "httpsProxy": "http://127.0.0.1:9001",
+      "timeout": 30000,
+      "retries": 5,
+      "headers": {
+        "paptrading": "1"
+      }
+    }
+  },
+  "pairlists": [
+    {
+      "method": "VolumePairList",
+      "number_assets": 70,
+      "sort_key": "quoteVolume",
+      "refresh_period": 1800
+    },
+    { "method": "AgeFilter", "min_days_listed": 60 },
+    {
+      "method": "PriceFilter",
+      "low_price_ratio": 0.003
+    },
+    {
+      "method": "SpreadFilter",
+      "max_spread_ratio": 0.008
+    }
+  ],
+  "entry_pricing": {
+    "price_side": "other",
+    "use_order_book": true,
+    "order_book_top": 1
+  },
+  "exit_pricing": {
+    "price_side": "other",
+    "use_order_book": true,
+    "order_book_top": 1
+  },
+  "bot_name": "bitget-nfi-5x-demo",
+  "initial_state": "running",
+  "force_entry_enable": false
+}
