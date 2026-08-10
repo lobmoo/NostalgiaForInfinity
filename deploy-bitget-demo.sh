@@ -175,9 +175,16 @@ docker stop bitget-demo 2>/dev/null || true
 docker rm bitget-demo 2>/dev/null || true
 
 echo -e "${GREEN}[3/4] 启动机器人...${NC}"
+# 构建代理环境变量
+PROXY_ENV=""
+if [ -n "$PROXY_URL" ]; then
+    PROXY_ENV="-e HTTP_PROXY=$PROXY_URL -e HTTPS_PROXY=$PROXY_URL -e http_proxy=$PROXY_URL -e https_proxy=$PROXY_URL"
+fi
+
 docker run -d \
   --name bitget-demo \
   --network host \
+  $PROXY_ENV \
   -v "$SCRIPT_DIR:/work" \
   -v "$SCRIPT_DIR/user_data/data:/work/user_data/data" \
   -w /work \
