@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 import os
 import sys
 
-PROXY = "http://127.0.0.1:9001"
+PROXY = os.environ.get("PROXY_URL", os.environ.get("HTTP_PROXY", "http://127.0.0.1:9001"))
 BASE_URL = "https://api.bitget.com/api/v2/mix/market/candles"
 DATA_DIR = "user_data/data/bitget/futures"
 PRODUCT_TYPE = "USDT-FUTURES"

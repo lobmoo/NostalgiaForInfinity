@@ -61,7 +61,16 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo -e "${GREEN}[1/4] 创建配置文件...${NC}"
+echo -e "${GREEN}[1/6] 构建 Docker 镜像...${NC}"
+if ! docker image inspect freqtrade_with_numba &>/dev/null; then
+    echo "freqtrade_with_numba 镜像不存在，开始构建..."
+    docker build -t freqtrade_with_numba -f docker/Dockerfile.custom .
+    echo "镜像构建完成"
+else
+    echo "freqtrade_with_numba 镜像已存在，跳过构建"
+fi
+
+echo -e "${GREEN}[2/6] 创建配置文件...${NC}"
 
 # 创建 user_data 目录
 mkdir -p user_data/data user_data/logs user_data/backtest_results
@@ -170,11 +179,21 @@ cat > configs/config-bitget-live.json << EOFCONFIG
 }
 EOFCONFIG
 
-echo -e "${GREEN}[2/4] 停止旧容器...${NC}"
+echo -e "${GREEN}[3/6] 下载 1d 日线数据...${NC}"
+mkdir -p user_data/data/bitget/futures
+if [ -n "$PROXY_URL" ]; then
+    HTTP_PROXY="$PROXY_URL" HTTPS_PROXY="$PROXY_URL" python3 download_1d_data.py 2>&1 || echo "1d数据下载失败，可能已存在或网络问题，继续部署..."
+else
+    python3 download_1d_data.py 2>&1 || echo "1d数据下载失败，可能已存在或网络问题，继续部署..."
+fi
+
+echo -e "${GREEN}[4/6] 停止旧容器...${NC}"
 docker stop bitget-demo 2>/dev/null || true
 docker rm bitget-demo 2>/dev/null || true
+docker stop nfi-updater-bitget 2>/dev/null || true
+docker rm nfi-updater-bitget 2>/dev/null || true
 
-echo -e "${GREEN}[3/4] 启动机器人...${NC}"
+echo -e "${GREEN}[5/6] 启动机器人...${NC}"
 # 构建代理环境变量
 PROXY_ENV=""
 if [ -n "$PROXY_URL" ]; then
@@ -196,8 +215,25 @@ docker run -d \
     --db-url sqlite:////work/user_data/bitget-demo-tradesv3.sqlite \
     --log-file user_data/logs/bitget-demo.log
 
-echo -e "${GREEN}[4/4] 验证启动...${NC}"
-sleep 5
+echo -e "${GREEN}[6/6] 启动自动更新器 + 验证...${NC}"
+
+# 构建并启动 nfi-updater
+docker build -t nfi-updater-bitget -f docker/Dockerfile.updater.bitget . 2>/dev/null || true
+UPDATER_PROXY_ENV=""
+if [ -n "$PROXY_URL" ]; then
+    UPDATER_PROXY_ENV="-e http_proxy=$PROXY_URL -e https_proxy=$PROXY_URL -e HTTP_PROXY=$PROXY_URL -e HTTPS_PROXY=$PROXY_URL"
+fi
+
+docker run -d \
+  --name nfi-updater-bitget \
+  --network host \
+  $UPDATER_PROXY_ENV \
+  -e TZ=Asia/Shanghai \
+  -e NFI_UPDATE_CRON="0 10 * * *" \
+  -v "$SCRIPT_DIR:/data" \
+  -v "/var/run/docker.sock:/var/run/docker.sock" \
+  --restart unless-stopped \
+  nfi-updater-bitget 2>/dev/null || echo "nfi-updater 启动失败，机器人可独立运行"
 
 # 检查容器状态
 if docker ps | grep -q bitget-demo; then
@@ -207,7 +243,7 @@ if docker ps | grep -q bitget-demo; then
     echo -e "${GREEN}==========================================${NC}"
     echo ""
     echo "容器状态:"
-    docker ps --format "  {{.Names}}: {{.Status}}" | grep bitget-demo
+    docker ps --format "  {{.Names}}: {{.Status}}" | grep -E "bitget-demo|nfi-updater"
     echo ""
     echo "配置信息:"
     echo "  策略: NostalgiaForInfinityX7_5x (5倍杠杆)"
@@ -219,11 +255,17 @@ if docker ps | grep -q bitget-demo; then
     else
         echo "  Telegram: ❌ 未配置"
     fi
+    if docker ps | grep -q nfi-updater-bitget; then
+        echo "  自动更新: ✅ 已启用 (每天10:00更新)"
+    else
+        echo "  自动更新: ❌ 未启动"
+    fi
     echo ""
     echo "常用命令:"
     echo "  docker logs -f bitget-demo          # 查看日志"
     echo "  docker restart bitget-demo          # 重启"
     echo "  docker stop bitget-demo             # 停止"
+    echo "  docker logs -f nfi-updater-bitget   # 查看更新器日志"
     echo ""
 else
     echo -e "${RED}启动失败！查看日志:${NC}"
