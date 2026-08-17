@@ -117,7 +117,7 @@ if [ "$CHANGES_DETECTED" = true ]; then
     rm -rf "$TEMP_DIR"
 
     # Restart the bitget-dryrun container
-    docker restart bitget-dryrun
+    docker restart bitget-demo
 
     echo "Bot restarted successfully."
 
