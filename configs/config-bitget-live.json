@@ -22,9 +22,7 @@
       "rateLimit": 50,
       "timeout": 30000,
       "retries": 5,
-      "headers": {
-        "paptrading": "1"
-      }
+      "headers": {}
     },
     "ccxt_async_config": {
       "options": {
@@ -35,9 +33,7 @@
       "httpsProxy": "http://127.0.0.1:9001",
       "timeout": 30000,
       "retries": 5,
-      "headers": {
-        "paptrading": "1"
-      }
+      "headers": {}
     },
     "pair_whitelist": []
   },
@@ -83,7 +79,7 @@
       "protection_trigger_global": "on"
     }
   },
-  "bot_name": "bitget-nfi-5x-demo",
+  "bot_name": "bitget-nfi-5x-live",
   "initial_state": "running",
   "force_entry_enable": false
 }
