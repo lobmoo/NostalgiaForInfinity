@@ -116,8 +116,8 @@ if [ "$CHANGES_DETECTED" = true ]; then
     echo -e "${GREEN}Updates applied! Restarting freqtrade...${NC}"
     rm -rf "$TEMP_DIR"
 
-    # Restart the bitget-dryrun container
-    docker restart bitget-demo
+    # Restart the bitget-live container
+    docker restart bitget-live
 
     echo "Bot restarted successfully."
 
